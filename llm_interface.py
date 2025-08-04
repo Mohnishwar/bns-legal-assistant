@@ -140,6 +140,25 @@ Please provide a clear, accurate, and helpful response based on the Bharatiya Ny
         except Exception as e:
             print(f"❌ Connection test failed: {e}")
             return False
+    
+    def generate_simple_response(self, question: str) -> str:
+        """Generate a simple response without vector search"""
+        try:
+            prompt = f"""
+            You are an AI Legal Assistant for the Bharatiya Nyaya Sanhita (BNS) - India's new criminal code.
+            
+            Question: {question}
+            
+            Please provide a helpful, accurate response about BNS. If you don't have specific information about the question, 
+            provide general guidance about BNS and suggest consulting a legal professional for specific legal advice.
+            
+            Keep your response clear, informative, and helpful for common citizens.
+            """
+            
+            response = self.model.generate_content(prompt)
+            return response.text
+        except Exception as e:
+            return f"I apologize, but I encountered an error while processing your question. Please try again or contact support. Error: {str(e)}"
 
 if __name__ == "__main__":
     # Test the LLM interface
