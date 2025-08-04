@@ -57,6 +57,11 @@ logs/
 # Data files (optional - include if you want to deploy with data)
 # bns_vector_data.json
 
+# Sensitive files
+secure-connect-bns.zip
+env_example.txt
+env_template.txt
+
 # Temporary files
 *.tmp
 *.temp 
