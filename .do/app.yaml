@@ -1,0 +1,27 @@
+name: bns-legal-assistant
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: your-username/your-repo-name
+    branch: main
+  run_command: python main.py
+  environment_slug: python
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  envs:
+  - key: GEMINI_API_KEY
+    scope: RUN_AND_BUILD_TIME
+    value: ${GEMINI_API_KEY}
+  - key: DATASTAX_API_KEY
+    scope: RUN_AND_BUILD_TIME
+    value: ${DATASTAX_API_KEY}
+  - key: DATASTAX_SECURE_CONNECT_BUNDLE_PATH
+    scope: RUN_AND_BUILD_TIME
+    value: ${DATASTAX_SECURE_CONNECT_BUNDLE_PATH}
+  - key: HOST
+    scope: RUN_TIME
+    value: "0.0.0.0"
+  - key: PORT
+    scope: RUN_TIME
+    value: "8000" 
