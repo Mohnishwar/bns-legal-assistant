@@ -7,7 +7,7 @@ An AI-powered legal assistant for the **Bharatiya Nyaya Sanhita (BNS)** - India'
 - **🤖 AI-Powered Responses**: Powered by Google Gemini 1.5 Flash
 - **🔍 Vector Search**: Intelligent retrieval of relevant BNS sections
 - **🌐 Web Interface**: Modern, user-friendly chat interface
-- **📚 Comprehensive Coverage**: All 745 BNS sections processed and indexed
+- **📚 Comprehensive Coverage**: All 358 BNS sections processed and indexed
 - **🔗 Contextual References**: Direct links to relevant legal sections
 - **🌍 Multi-language Support**: Ready for Hindi and English
 - **⚡ Real-time Processing**: Instant responses to legal queries
