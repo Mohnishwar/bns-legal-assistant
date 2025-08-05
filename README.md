@@ -137,7 +137,7 @@ PORT=8000
 
 ## 📊 System Status
 
-- ✅ **745 BNS sections** processed and embedded
+- ✅ **358 BNS sections** processed and embedded
 - ✅ **Vector search** working
 - ✅ **AI responses** functional
 - ✅ **Web interface** accessible
