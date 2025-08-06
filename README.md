@@ -9,7 +9,6 @@ An AI-powered legal assistant for the **Bharatiya Nyaya Sanhita (BNS)** - India'
 - **🌐 Web Interface**: Modern, user-friendly chat interface
 - **📚 Comprehensive Coverage**: All 358 BNS sections processed and indexed
 - **🔗 Contextual References**: Direct links to relevant legal sections
-- **🌍 Multi-language Support**: Ready for Hindi and English
 - **⚡ Real-time Processing**: Instant responses to legal queries
 
 ## 🚀 Quick Start
