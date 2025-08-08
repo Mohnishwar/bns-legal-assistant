@@ -208,4 +208,4 @@ For more help, please open an issue on GitHub.
 
 ---
 
-**Made with ❤️ for the Indian legal community** 
+**Made with ❤️ for the Indian legal community**
