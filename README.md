@@ -1,147 +1,183 @@
-# 🤖 BNS Legal Assistant
+# BNS Legal Assistant 🤖⚖️
 
-An AI-powered legal assistant for the **Bharatiya Nyaya Sanhita (BNS)** - India's new criminal code. This intelligent system helps common citizens understand complex legal concepts in simple language with contextual references to relevant legal sections.
+An AI-powered legal assistant for the Bharatiya Nyaya Sanhita (BNS) - India's new criminal code. This system helps common citizens understand legal concepts in simple language with contextual references to relevant legal sections.
 
 ## 🌟 Features
 
-- **🤖 AI-Powered Responses**: Powered by Google Gemini 1.5 Flash
-- **🔍 Vector Search**: Intelligent retrieval of relevant BNS sections
-- **🌐 Web Interface**: Modern, user-friendly chat interface
-- **📚 Comprehensive Coverage**: All 745 BNS sections processed and indexed
-- **🔗 Contextual References**: Direct links to relevant legal sections
-- **🌍 Multi-language Support**: Ready for Hindi and English
-- **⚡ Real-time Processing**: Instant responses to legal queries
+- **AI-Powered Legal Assistant**: Uses Google Gemini 1.5 Flash for intelligent responses
+- **Vector Search**: Advanced semantic search using Pinecone vector database
+- **Simple Language**: Explains complex legal concepts in easy-to-understand terms
+- **Contextual References**: Provides relevant BNS section numbers and citations
+- **Web Interface**: User-friendly chat interface
+- **REST API**: Full API for integration with other applications
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.11+
-- Google Gemini API Key
-- DataStax Astra DB (optional - local storage fallback available)
 
-### Local Setup
+- Python 3.11 or higher
+- Google Gemini API key
+- Pinecone API key (optional - system works with local file storage)
 
-1. **Clone the repository:**
+### Installation
+
+1. **Clone the repository**
    ```bash
    git clone <your-repo-url>
    cd BNS
    ```
 
-2. **Create virtual environment:**
-   ```bash
-   python -m venv venv311
-   source venv311/bin/activate  # On Windows: venv311\Scripts\activate
-   ```
-
-3. **Install dependencies:**
+2. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Set up environment variables:**
+3. **Set up environment variables**
    ```bash
-   cp .env.example .env
-   # Edit .env with your API keys
+   # The setup script will create a .env template
+   python setup.py
+   ```
+   
+   Then edit the `.env` file with your API keys:
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   PINECONE_API_KEY=your_pinecone_api_key_here
+   SECRET_KEY=your_secret_key_here
+   HOST=0.0.0.0
+   PORT=8000
    ```
 
-5. **Run setup:**
+4. **Run the setup**
    ```bash
    python setup.py
    ```
 
-6. **Start the server:**
+5. **Start the server**
    ```bash
    python main.py
    ```
 
-7. **Access the application:**
-   ```
-   http://localhost:8000/frontend/index.html
-   ```
+6. **Access the web interface**
+   Open your browser and go to: `http://localhost:8000/frontend/index.html`
 
-## 🌐 Online Deployment
+## 🔧 API Endpoints
 
-### Railway (Recommended)
+### Health Check
 ```bash
-npm install -g @railway/cli
-railway login
-railway init
-railway up
+GET /health
 ```
 
-### Other Options
-- **Render**: Connect GitHub repo and deploy
-- **Heroku**: Use Heroku CLI
-- **DigitalOcean**: App Platform deployment
+### Ask a Question
+```bash
+POST /ask
+Content-Type: application/json
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
+{
+  "question": "What is the punishment for theft?",
+  "language": "English"
+}
+```
+
+### Process BNS Data
+```bash
+POST /process-data
+```
+
+### Get Chapters
+```bash
+GET /chapters
+```
+
+### Get Specific Section
+```bash
+GET /sections/{section_number}
+```
 
 ## 📁 Project Structure
 
 ```
 BNS/
 ├── main.py                 # FastAPI application
+├── llm_interface.py        # Gemini LLM integration
 ├── data_processor.py       # BNS data processing
-├── vector_db.py           # Vector database interface
-├── llm_interface.py       # Gemini LLM interface
-├── frontend/
-│   └── index.html         # Web interface
-├── BNS_optimized.json     # BNS legal data
-├── bns_vector_data.json   # Processed embeddings
-├── requirements.txt        # Dependencies
-├── setup.py              # Setup script
-└── DEPLOYMENT.md         # Deployment guide
+├── vector_db_pinecone.py   # Vector database interface
+├── setup.py               # Setup script
+├── requirements.txt        # Python dependencies
+├── .env                   # Environment variables
+├── .gitignore            # Git ignore rules
+├── README.md             # This file
+├── BNS_optimized.json    # Main BNS data
+├── BNS.json              # Original BNS data
+├── BNS_optimized.csv     # CSV version
+├── bns_vector_data.json  # Vector embeddings
+└── frontend/
+    └── index.html        # Web interface
 ```
 
-## 🔧 API Endpoints
+## 🔑 Getting API Keys
 
-- `GET /` - API root
-- `GET /health` - Health check
-- `POST /ask` - Ask legal questions
-- `GET /chapters` - List BNS chapters
-- `GET /sections/{number}` - Get specific section
-- `POST /process-data` - Reprocess BNS data
+### Google Gemini API
+1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create a new API key
+3. Add it to your `.env` file
 
-## 🎯 Usage Examples
+### Pinecone API (Optional)
+1. Go to [Pinecone Console](https://app.pinecone.io/)
+2. Create a free account
+3. Get your API key
+4. Add it to your `.env` file
 
-### Ask Legal Questions
+**Note**: If Pinecone is not available, the system will automatically use local file storage for vector search.
+
+## 🛠️ Development
+
+### Running in Development Mode
 ```bash
-curl -X POST "http://localhost:8000/ask" \
+python main.py
+```
+
+### Testing the API
+```bash
+# Test health endpoint
+curl http://localhost:8000/health
+
+# Test question endpoint
+curl -X POST http://localhost:8000/ask \
   -H "Content-Type: application/json" \
   -d '{"question": "What is the punishment for theft?"}'
 ```
 
-### Health Check
-```bash
-curl http://localhost:8000/health
-```
+## 🚀 Deployment
 
-## 🔑 Environment Variables
+### Local Deployment
+The application is ready to run locally. Just follow the Quick Start instructions above.
 
-```bash
-GEMINI_API_KEY=your_gemini_api_key
-DATASTAX_API_KEY=your_datastax_api_key
-DATASTAX_SECURE_CONNECT_BUNDLE_PATH=path_to_bundle
+### Cloud Deployment
+This application can be deployed to various cloud platforms:
+
+- **Railway**: Easy deployment with automatic environment variable management
+- **Render**: Free tier available with automatic deployments
+- **Heroku**: Traditional platform with good Python support
+- **DigitalOcean App Platform**: Simple deployment with good performance
+
+### Environment Variables for Production
+```env
+GEMINI_API_KEY=your_production_gemini_key
+PINECONE_API_KEY=your_production_pinecone_key
+SECRET_KEY=your_secure_secret_key
 HOST=0.0.0.0
 PORT=8000
+DEBUG=False
 ```
 
-## 🛠️ Technology Stack
+## 📊 Data Sources
 
-- **Backend**: FastAPI (Python)
-- **AI/LLM**: Google Gemini 1.5 Flash
-- **Vector Database**: DataStax Astra DB (with local fallback)
-- **Embeddings**: Sentence Transformers
-- **Frontend**: HTML/JavaScript
-- **Deployment**: Railway/Render/Heroku
-
-## 📊 System Status
-
-- ✅ **745 BNS sections** processed and embedded
-- ✅ **Vector search** working
-- ✅ **AI responses** functional
-- ✅ **Web interface** accessible
-- ✅ **API endpoints** operational
+The system uses the Bharatiya Nyaya Sanhita (BNS) data, which includes:
+- All chapters and sections
+- Legal definitions and explanations
+- Penalties and punishments
+- Illustrations and examples
+- Cross-references between sections
 
 ## 🤝 Contributing
 
@@ -151,25 +187,25 @@ PORT=8000
 4. Test thoroughly
 5. Submit a pull request
 
-## 📄 License
+## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is for educational and informational purposes. Please consult qualified legal professionals for specific legal advice.
 
-## 🙏 Acknowledgments
+## ⚠️ Disclaimer
 
-- **Google Gemini** for AI capabilities
-- **DataStax Astra** for vector database
-- **FastAPI** for the web framework
-- **Indian Legal System** for the BNS data
+This AI assistant provides general information about the BNS for educational purposes. It does not constitute legal advice. For specific legal matters, please consult qualified legal professionals.
 
-## 📞 Support
+## 🆘 Support
 
-For issues or questions:
-1. Check the [DEPLOYMENT.md](DEPLOYMENT.md) guide
-2. Verify environment variables
-3. Test the health endpoint
-4. Check deployment logs
+If you encounter any issues:
+
+1. Check that all dependencies are installed
+2. Verify your API keys are correct
+3. Ensure the BNS data files are present
+4. Check the logs for error messages
+
+For more help, please open an issue on GitHub.
 
 ---
 
-**🎉 Your AI-powered BNS Legal Assistant is ready to help citizens understand India's new criminal code!** 
+**Made with ❤️ for the Indian legal community** 

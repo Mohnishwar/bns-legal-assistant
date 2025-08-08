@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 # Import our custom modules
 from data_processor import BNSDataProcessor
-from vector_db import DataStaxVectorDB
+from vector_db_pinecone import PineconeVectorDB
 from llm_interface import GeminiLLM
 
 load_dotenv()
@@ -62,7 +62,7 @@ data_processor = None
 def get_vector_db():
     global vector_db
     if vector_db is None:
-        vector_db = DataStaxVectorDB()
+        vector_db = PineconeVectorDB()
     return vector_db
 
 def get_llm():

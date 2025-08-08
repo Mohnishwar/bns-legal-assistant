@@ -18,7 +18,7 @@ def check_dependencies():
     print("🔍 Checking dependencies...")
     
     required_packages = [
-        'fastapi', 'uvicorn', 'google-generativeai', 'cassandra-driver',
+        'fastapi', 'uvicorn', 'google-generativeai', 'pinecone-client',
         'python-dotenv', 'requests', 'pydantic', 'numpy', 'sentence-transformers'
     ]
     
@@ -29,7 +29,7 @@ def check_dependencies():
         'fastapi': 'fastapi',
         'uvicorn': 'uvicorn',
         'google-generativeai': 'google.generativeai',
-        'cassandra-driver': 'cassandra',
+        'pinecone-client': 'pinecone',
         'python-dotenv': 'dotenv',
         'requests': 'requests',
         'pydantic': 'pydantic',
@@ -67,8 +67,7 @@ def check_environment():
     
     required_vars = [
         'GEMINI_API_KEY',
-        'DATASTAX_API_KEY',
-        'DATASTAX_SECURE_CONNECT_BUNDLE_PATH'
+        'PINECONE_API_KEY'
     ]
     
     missing_vars = []
@@ -82,7 +81,13 @@ def check_environment():
     
     if missing_vars:
         print(f"\n❌ Missing environment variables: {', '.join(missing_vars)}")
-        print("Please set these variables in your .env file")
+        print("Please create a .env file with the required variables")
+        print("\nExample .env file:")
+        print("GEMINI_API_KEY=your_gemini_api_key_here")
+        print("PINECONE_API_KEY=your_pinecone_api_key_here")
+        print("SECRET_KEY=your_secret_key_here")
+        print("HOST=0.0.0.0")
+        print("PORT=8000")
         return False
     
     print("✅ All environment variables are set!")
@@ -107,6 +112,7 @@ def check_data_files():
     
     if missing_files:
         print(f"\n❌ Missing data files: {', '.join(missing_files)}")
+        print("Please ensure BNS_optimized.json is in the project directory")
         return False
     
     print("✅ All data files are present!")
@@ -118,7 +124,7 @@ def process_bns_data():
     
     try:
         from data_processor import BNSDataProcessor
-        from vector_db import DataStaxVectorDB
+        from vector_db_pinecone import PineconeVectorDB
         
         # Process data
         processor = BNSDataProcessor()
@@ -126,7 +132,7 @@ def process_bns_data():
         
         # Store in vector database (with fallback to file)
         try:
-            vector_db = DataStaxVectorDB()
+            vector_db = PineconeVectorDB()
             vector_db.insert_documents(documents)
             print(f"✅ Successfully processed {len(documents)} BNS sections and stored in database")
         except Exception as db_error:
@@ -158,8 +164,8 @@ def test_connections():
     
     # Test vector database
     try:
-        from vector_db import DataStaxVectorDB
-        vector_db = DataStaxVectorDB()
+        from vector_db_pinecone import PineconeVectorDB
+        vector_db = PineconeVectorDB()
         print("✅ Vector database connection successful")
     except Exception as e:
         print(f"⚠️ Vector database connection error: {e}")
@@ -182,20 +188,60 @@ def create_directories():
         Path(directory).mkdir(exist_ok=True)
         print(f"✅ Created directory: {directory}")
 
+def create_env_template():
+    """Create .env template if it doesn't exist"""
+    env_file = Path(".env")
+    if not env_file.exists():
+        print("\n📝 Creating .env template...")
+        env_content = """# BNS Legal Assistant Environment Configuration
+# =============================================
+
+# Gemini API Configuration
+# Get your API key from: https://makersuite.google.com/app/apikey
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Pinecone API Configuration
+# Get your API key from: https://app.pinecone.io/
+PINECONE_API_KEY=your_pinecone_api_key_here
+
+# Application Security
+SECRET_KEY=your_secret_key_here
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# Server Configuration
+HOST=0.0.0.0
+PORT=8000
+DEBUG=True
+
+# Optional: Logging Configuration
+LOG_LEVEL=INFO
+LOG_FILE=logs/bns_legal_assistant.log
+"""
+        with open(env_file, "w", encoding="utf-8") as f:
+            f.write(env_content)
+        print("✅ Created .env template")
+        print("⚠️ Please edit .env file with your actual API keys")
+
 def main():
     """Main setup function"""
     print("🚀 BNS Legal Assistant Setup")
     print("=" * 40)
     
+    # Create .env template if needed
+    create_env_template()
+    
     # Check dependencies
     if not check_dependencies():
         print("\n❌ Setup failed: Missing dependencies")
+        print("\nTo install dependencies, run:")
+        print("pip install -r requirements.txt")
         sys.exit(1)
     
     # Check environment
     if not check_environment():
         print("\n❌ Setup failed: Missing environment variables")
-        print("Please create a .env file with the required variables")
+        print("Please edit the .env file with your API keys")
         sys.exit(1)
     
     # Check data files
@@ -223,6 +269,7 @@ def main():
     print("python main.py")
     print("\nTo access the web interface, open:")
     print("http://localhost:8000/frontend/index.html")
+    print("\n📚 For more information, see README.md")
 
 if __name__ == "__main__":
-    main() 
+    main()
