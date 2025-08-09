@@ -1,17 +1,17 @@
-# BNS Legal Assistant 🤖⚖️
+# BNS Legal Assistant
 
 An AI-powered legal assistant for the Bharatiya Nyaya Sanhita (BNS) - India's new criminal code. This system helps common citizens understand legal concepts in simple language with contextual references to relevant legal sections.
 
-## 🌟 Features
+## Features
 
-- **AI-Powered Legal Assistant**: Uses Google Gemini 1.5 Flash for intelligent responses
-- **Vector Search**: Advanced semantic search using Pinecone vector database
-- **Simple Language**: Explains complex legal concepts in easy-to-understand terms
-- **Contextual References**: Provides relevant BNS section numbers and citations
-- **Web Interface**: User-friendly chat interface
-- **REST API**: Full API for integration with other applications
+- AI-Powered Legal Assistant: Uses Google Gemini 1.5 Flash for intelligent responses
+- Vector Search: Advanced semantic search using Pinecone vector database
+- Simple Language: Explains complex legal concepts in easy-to-understand terms
+- Contextual References: Provides relevant BNS section numbers and citations
+- Web Interface: User-friendly chat interface
+- REST API: Full API for integration with other applications
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -60,7 +60,7 @@ An AI-powered legal assistant for the Bharatiya Nyaya Sanhita (BNS) - India's ne
 6. **Access the web interface**
    Open your browser and go to: `http://localhost:8000/frontend/index.html`
 
-## 🔧 API Endpoints
+## API Endpoints
 
 ### Health Check
 ```bash
@@ -114,7 +114,7 @@ BNS/
     └── index.html        # Web interface
 ```
 
-## 🔑 Getting API Keys
+## Getting API Keys
 
 ### Google Gemini API
 1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
@@ -147,7 +147,7 @@ curl -X POST http://localhost:8000/ask \
   -d '{"question": "What is the punishment for theft?"}'
 ```
 
-## 🚀 Deployment
+## Deployment
 
 ### Local Deployment
 The application is ready to run locally. Just follow the Quick Start instructions above.
