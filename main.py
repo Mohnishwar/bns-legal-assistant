@@ -15,22 +15,7 @@ from llm_interface import GeminiLLM
 
 load_dotenv()
 
-
-
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Configure this properly for production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Mount static files
-app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
-
-# Security
-security = HTTPBearer()
+from contextlib import asynccontextmanager
 
 # Pydantic models
 class QuestionRequest(BaseModel):
@@ -78,8 +63,6 @@ def get_data_processor():
         data_processor = BNSDataProcessor()
     return data_processor
 
-from contextlib import asynccontextmanager
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialize services on startup"""
@@ -114,13 +97,28 @@ async def lifespan(app: FastAPI):
         print(f"❌ Error during startup: {e}")
     yield
 
-# Update FastAPI app initialization
+# Initialize FastAPI app
 app = FastAPI(
     title="BNS Legal Assistant API",
     description="AI-powered legal assistant for Bharatiya Nyaya Sanhita (BNS)",
     version="1.0.0",
     lifespan=lifespan
 )
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Configure this properly for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount static files
+app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
+
+# Security
+security = HTTPBearer()
 
 @app.get("/", response_model=Dict[str, str])
 async def root():
