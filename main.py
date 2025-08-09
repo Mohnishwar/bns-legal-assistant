@@ -15,12 +15,7 @@ from llm_interface import GeminiLLM
 
 load_dotenv()
 
-# Initialize FastAPI app
-app = FastAPI(
-    title="BNS Legal Assistant API",
-    description="AI-powered legal assistant for Bharatiya Nyaya Sanhita (BNS)",
-    version="1.0.0"
-)
+
 
 # Add CORS middleware
 app.add_middleware(
@@ -41,6 +36,8 @@ security = HTTPBearer()
 class QuestionRequest(BaseModel):
     question: str
     language: Optional[str] = "English"
+    
+    model_config = {"protected_namespaces": ()}
 
 class QuestionResponse(BaseModel):
     answer: str
@@ -48,11 +45,15 @@ class QuestionResponse(BaseModel):
     model_used: str
     status: str
     error: Optional[str] = None
+    
+    model_config = {"protected_namespaces": ()}
 
 class HealthResponse(BaseModel):
     status: str
     message: str
     services: Dict[str, str]
+    
+    model_config = {"protected_namespaces": ()}
 
 # Global instances
 vector_db = None
@@ -77,17 +78,49 @@ def get_data_processor():
         data_processor = BNSDataProcessor()
     return data_processor
 
-@app.on_event("startup")
-async def startup_event():
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     """Initialize services on startup"""
     try:
-        # Test connections
-        get_vector_db()
-        get_llm()
-        get_data_processor()
+        # Test connections - make them non-blocking
+        print("🔄 Initializing services...")
+        
+        # Initialize LLM (most important)
+        try:
+            get_llm()
+            print("✅ LLM initialized successfully")
+        except Exception as e:
+            print(f"⚠️ LLM initialization warning: {e}")
+        
+        # Initialize data processor
+        try:
+            get_data_processor()
+            print("✅ Data processor initialized successfully")
+        except Exception as e:
+            print(f"⚠️ Data processor initialization warning: {e}")
+        
+        # Initialize vector DB (can fail gracefully)
+        try:
+            get_vector_db()
+            print("✅ Vector database initialized successfully")
+        except Exception as e:
+            print(f"⚠️ Vector database initialization warning: {e}")
+            print("📁 Will use local file storage as fallback")
+        
         print("✅ All services initialized successfully")
     except Exception as e:
         print(f"❌ Error during startup: {e}")
+    yield
+
+# Update FastAPI app initialization
+app = FastAPI(
+    title="BNS Legal Assistant API",
+    description="AI-powered legal assistant for Bharatiya Nyaya Sanhita (BNS)",
+    version="1.0.0",
+    lifespan=lifespan
+)
 
 @app.get("/", response_model=Dict[str, str])
 async def root():
