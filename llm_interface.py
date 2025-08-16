@@ -118,11 +118,12 @@ Please provide a clear, accurate, and helpful response based on the Bharatiya Ny
         Generate embedding for text using Gemini's embedding model
         """
         try:
-            # Note: This is a placeholder. You'll need to use the appropriate
-            # embedding model from Google's API
-            # For now, we'll use a simple approach
-            embedding_model = genai.get_embedding_model('embedding-001')
-            result = embedding_model.embed_content(text)
+            # Use the embed_content method directly
+            result = genai.embed_content(
+                model='models/embedding-001',
+                content=text,
+                task_type='retrieval_document'
+            )
             return result['embedding']
         except Exception as e:
             print(f"❌ Error generating embedding: {e}")
