@@ -13,9 +13,8 @@ from data_processor import BNSDataProcessor
 from vector_db_qdrant import QdrantVectorDB
 from llm_interface import GeminiLLM
 
-# Set environment variables directly to avoid .env file encoding issues
-if not os.getenv('GEMINI_API_KEY'):
-    os.environ['GEMINI_API_KEY'] = 'AIzaSyBVDhgO5TiW42IWooxsa43qhLvouCIn-vY'
+# Load environment variables from .env file
+# API key should be set in .env file, not hardcoded here
 
 from contextlib import asynccontextmanager
 

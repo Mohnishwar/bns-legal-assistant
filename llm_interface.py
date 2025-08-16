@@ -2,9 +2,8 @@ import os
 import google.generativeai as genai
 from typing import List, Dict, Any, Optional
 
-# Set environment variables directly to avoid .env file encoding issues
-if not os.getenv('GEMINI_API_KEY'):
-    os.environ['GEMINI_API_KEY'] = 'AIzaSyBVDhgO5TiW42IWooxsa43qhLvouCIn-vY'
+# Load environment variables from .env file
+# API key should be set in .env file, not hardcoded here
 
 class GeminiLLM:
     def __init__(self):
