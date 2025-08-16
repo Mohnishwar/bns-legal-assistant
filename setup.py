@@ -18,7 +18,7 @@ def check_dependencies():
     print("🔍 Checking dependencies...")
     
     required_packages = [
-        'fastapi', 'uvicorn', 'google-generativeai', 'pinecone-client',
+        'fastapi', 'uvicorn', 'google-generativeai', 'qdrant-client',
         'python-dotenv', 'requests', 'pydantic', 'numpy', 'sentence-transformers'
     ]
     
@@ -29,7 +29,7 @@ def check_dependencies():
         'fastapi': 'fastapi',
         'uvicorn': 'uvicorn',
         'google-generativeai': 'google.generativeai',
-        'pinecone-client': 'pinecone',
+        'qdrant-client': 'qdrant',
         'python-dotenv': 'dotenv',
         'requests': 'requests',
         'pydantic': 'pydantic',
@@ -67,7 +67,7 @@ def check_environment():
     
     required_vars = [
         'GEMINI_API_KEY',
-        'PINECONE_API_KEY'
+        'QDRANT_URL'
     ]
     
     missing_vars = []
@@ -84,7 +84,7 @@ def check_environment():
         print("Please create a .env file with the required variables")
         print("\nExample .env file:")
         print("GEMINI_API_KEY=your_gemini_api_key_here")
-        print("PINECONE_API_KEY=your_pinecone_api_key_here")
+        print("QDRANT_URL=your_qdrant_url_here")
         print("SECRET_KEY=your_secret_key_here")
         print("HOST=0.0.0.0")
         print("PORT=8000")
@@ -124,7 +124,7 @@ def process_bns_data():
     
     try:
         from data_processor import BNSDataProcessor
-        from vector_db_pinecone import PineconeVectorDB
+        from vector_db_qdrant import QdrantVectorDB
         
         # Process data
         processor = BNSDataProcessor()
@@ -132,7 +132,7 @@ def process_bns_data():
         
         # Store in vector database (with fallback to file)
         try:
-            vector_db = PineconeVectorDB()
+            vector_db = QdrantVectorDB()
             vector_db.insert_documents(documents)
             print(f"✅ Successfully processed {len(documents)} BNS sections and stored in database")
         except Exception as db_error:
@@ -164,8 +164,8 @@ def test_connections():
     
     # Test vector database
     try:
-        from vector_db_pinecone import PineconeVectorDB
-        vector_db = PineconeVectorDB()
+        from vector_db_qdrant import QdrantVectorDB
+        vector_db = QdrantVectorDB()
         print("✅ Vector database connection successful")
     except Exception as e:
         print(f"⚠️ Vector database connection error: {e}")
@@ -200,9 +200,10 @@ def create_env_template():
 # Get your API key from: https://makersuite.google.com/app/apikey
 GEMINI_API_KEY=your_gemini_api_key_here
 
-# Pinecone API Configuration
-# Get your API key from: https://app.pinecone.io/
-PINECONE_API_KEY=your_pinecone_api_key_here
+# Qdrant Vector Database Configuration
+# Get your API key from: https://cloud.qdrant.io/
+QDRANT_URL=your_qdrant_url_here
+QDRANT_API_KEY=your_qdrant_api_key_here
 
 # Application Security
 SECRET_KEY=your_secret_key_here
