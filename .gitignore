@@ -34,8 +34,6 @@ ENV/
 env.bak/
 venv.bak/
 
-
-
 # IDE
 .vscode/
 .idea/
@@ -66,4 +64,4 @@ env_template.txt
 
 # Temporary files
 *.tmp
-*.temp 
+*.temp

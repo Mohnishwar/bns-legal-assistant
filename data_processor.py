@@ -46,7 +46,10 @@ class BNSDataProcessor:
         documents = []
         
         # Create main section document
-        section_text = " ".join(section.get('text', []))
+        section_text = section.get('content', '')
+        if not section_text:
+            section_text = section.get('section_title', '')
+        
         section_chunks = self.chunk_text(section_text)
         
         for i, chunk in enumerate(section_chunks):
@@ -59,12 +62,12 @@ class BNSDataProcessor:
                 'section_title': section.get('section_title', ''),
                 'content': chunk,
                 'full_text': section_text,
-                'status': section.get('status', 'Active'),
-                'jurisdiction': section.get('jurisdiction', 'India'),
-                'keywords': section.get('keywords', []),
-                'cross_references': section.get('cross_references', []),
-                'penalties': section.get('penalties', []),
-                'illustrations': section.get('illustrations', []),
+                'status': 'Active',
+                'jurisdiction': 'India',
+                'keywords': [],
+                'cross_references': [],
+                'penalties': [],
+                'illustrations': [],
                 'chunk_index': i,
                 'total_chunks': len(section_chunks)
             }
@@ -78,7 +81,10 @@ class BNSDataProcessor:
         """
         all_documents = []
         
-        for chapter in data.get('data', []):
+        # Handle both 'chapters' and 'data' structures
+        chapters = data.get('chapters', []) or data.get('data', [])
+        
+        for chapter in chapters:
             chapter_info = {
                 'chapter_number': chapter.get('chapter_number', ''),
                 'chapter_title': chapter.get('chapter_title', ''),

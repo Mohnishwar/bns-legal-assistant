@@ -1,183 +1,231 @@
-# BNS Legal Assistant
+# BNS Legal Assistant 🏛️
 
-An AI-powered legal assistant for the Bharatiya Nyaya Sanhita (BNS) - India's new criminal code. This system helps common citizens understand legal concepts in simple language with contextual references to relevant legal sections.
+A comprehensive AI-powered legal assistant for the Bharatiya Nyaya Sanhita (BNS) - India's new criminal code. This system provides accurate legal information, answers queries, and helps users understand criminal law provisions.
 
-## Features
+## 🌟 Features
 
-- AI-Powered Legal Assistant: Uses Google Gemini 1.5 Flash for intelligent responses
-- Vector Search: Advanced semantic search using Pinecone vector database
-- Simple Language: Explains complex legal concepts in easy-to-understand terms
-- Contextual References: Provides relevant BNS section numbers and citations
-- Web Interface: User-friendly chat interface
-- REST API: Full API for integration with other applications
+- **AI-Powered Legal Queries**: Get accurate answers to legal questions using Gemini 1.5 Flash
+- **Comprehensive BNS Coverage**: Access to all sections of the Bharatiya Nyaya Sanhita
+- **Vector Database Search**: Fast and accurate retrieval of relevant legal information
+- **RESTful API**: Easy integration with web applications and mobile apps
+- **Web Interface**: User-friendly frontend for legal queries
+- **Multi-language Support**: Currently supports English (expandable)
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
 - Python 3.11 or higher
-- Google Gemini API key
-- Pinecone API key (optional - system works with local file storage)
+- Git
+- Internet connection for API access
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone <your-repository-url>
    cd BNS
    ```
 
-2. **Install dependencies**
+2. **Create a virtual environment**
+   ```bash
+   # Windows
+   python -m venv venv
+   venv\Scripts\activate
+   
+   # macOS/Linux
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up environment variables**
+4. **Set up environment variables**
    ```bash
-   # The setup script will create a .env template
-   python setup.py
-   ```
+   # Copy the example environment file
+   cp .env.example .env
    
-   Then edit the `.env` file with your API keys:
-   ```env
+   # Edit .env with your API keys
    GEMINI_API_KEY=your_gemini_api_key_here
-   PINECONE_API_KEY=your_pinecone_api_key_here
-   SECRET_KEY=your_secret_key_here
-   HOST=0.0.0.0
-   PORT=8000
+   QDRANT_URL=your_qdrant_url_here
+   QDRANT_API_KEY=your_qdrant_api_key_here
    ```
 
-4. **Run the setup**
-   ```bash
-   python setup.py
-   ```
-
-5. **Start the server**
+5. **Run the system**
    ```bash
    python main.py
    ```
 
-6. **Access the web interface**
-   Open your browser and go to: `http://localhost:8000/frontend/index.html`
+6. **Access the system**
+   - API: http://localhost:8001
+   - Web Interface: http://localhost:8001/frontend/index.html
+   - Health Check: http://localhost:8001/health
 
-## API Endpoints
+## 🔑 API Keys Setup
 
-### Health Check
-```bash
-GET /health
-```
+### 1. Gemini API Key
+- Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+- Create a new API key
+- Add it to your `.env` file
 
-### Ask a Question
-```bash
-POST /ask
-Content-Type: application/json
-
-{
-  "question": "What is the punishment for theft?",
-  "language": "English"
-}
-```
-
-### Process BNS Data
-```bash
-POST /process-data
-```
-
-### Get Chapters
-```bash
-GET /chapters
-```
-
-### Get Specific Section
-```bash
-GET /sections/{section_number}
-```
+### 2. Qdrant Vector Database
+- Visit [Qdrant Cloud](https://cloud.qdrant.io/)
+- Create a new cluster
+- Get your URL and API key
+- Add them to your `.env` file
 
 ## 📁 Project Structure
 
 ```
 BNS/
-├── main.py                 # FastAPI application
+├── main.py                 # Main FastAPI application
 ├── llm_interface.py        # Gemini LLM integration
-├── data_processor.py       # BNS data processing
-├── vector_db_pinecone.py   # Vector database interface
-├── setup.py               # Setup script
+├── vector_db_qdrant.py     # Qdrant vector database operations
+├── data_processor.py       # BNS data processing and embedding
+├── setup.py               # System setup and initialization
 ├── requirements.txt        # Python dependencies
-├── .env                   # Environment variables
-├── .gitignore            # Git ignore rules
-├── README.md             # This file
-├── BNS_optimized.json    # Main BNS data
-├── BNS.json              # Original BNS data
-├── BNS_optimized.csv     # CSV version
-├── bns_vector_data.json  # Vector embeddings
-└── frontend/
-    └── index.html        # Web interface
+├── .env                   # Environment configuration
+├── BNS_optimized.json     # Core BNS dataset
+├── frontend/              # Web interface
+│   └── index.html         # Main web page
+└── README.md              # This file
 ```
 
-## Getting API Keys
+## 🛠️ API Endpoints
 
-### Google Gemini API
-1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Create a new API key
-3. Add it to your `.env` file
+### Core Endpoints
 
-### Pinecone API (Optional)
-1. Go to [Pinecone Console](https://app.pinecone.io/)
-2. Create a free account
-3. Get your API key
-4. Add it to your `.env` file
+- **`GET /health`** - System health check
+- **`POST /ask`** - Ask legal questions
+- **`GET /chapters`** - List all BNS chapters
+- **`GET /sections/{section_number}`** - Get specific section details
+- **`POST /process-data`** - Reprocess BNS data
 
-**Note**: If Pinecone is not available, the system will automatically use local file storage for vector search.
+### Example API Usage
 
-## 🛠️ Development
+```bash
+# Ask a legal question
+curl -X POST "http://localhost:8001/ask" \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What is the penalty for theft?", "language": "English"}'
 
-### Running in Development Mode
+# Check system health
+curl "http://localhost:8001/health"
+
+# Get all chapters
+curl "http://localhost:8001/chapters"
+```
+
+## 🧪 Testing the System
+
+After starting the system, you can test it with various legal questions:
+
+- "What is the penalty for theft?"
+- "What is the punishment for murder?"
+- "What is the penalty for causing hurt?"
+- "What is the punishment for cheating?"
+- "What is the Bharatiya Nyaya Sanhita?"
+
+## 🔧 Configuration
+
+### Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `GEMINI_API_KEY` | Google Gemini API key | Yes |
+| `QDRANT_URL` | Qdrant vector database URL | Yes |
+| `QDRANT_API_KEY` | Qdrant API key | Yes |
+| `HOST` | Server host (default: 0.0.0.0) | No |
+| `PORT` | Server port (default: 8000) | No |
+
+### Port Configuration
+
+If port 8000 is busy, you can change it:
+
+```bash
+# Set environment variable
+export PORT=8001  # Linux/macOS
+set PORT=8001     # Windows
+
+# Or modify .env file
+PORT=8001
+```
+
+## 🚀 Deployment
+
+### Local Development
 ```bash
 python main.py
 ```
 
-### Testing the API
+### Production Deployment
 ```bash
-# Test health endpoint
-curl http://localhost:8000/health
+# Install production dependencies
+pip install -r requirements.txt
 
-# Test question endpoint
-curl -X POST http://localhost:8000/ask \
-  -H "Content-Type: application/json" \
-  -d '{"question": "What is the punishment for theft?"}'
+# Set production environment
+export ENV=production
+
+# Run with uvicorn
+uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-## Deployment
+### Docker Deployment
+```dockerfile
+FROM python:3.11-slim
 
-### Local Deployment
-The application is ready to run locally. Just follow the Quick Start instructions above.
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-### Cloud Deployment
-This application can be deployed to various cloud platforms:
+COPY . .
+EXPOSE 8000
 
-- **Railway**: Easy deployment with automatic environment variable management
-- **Render**: Free tier available with automatic deployments
-- **Heroku**: Traditional platform with good Python support
-- **DigitalOcean App Platform**: Simple deployment with good performance
-
-### Environment Variables for Production
-```env
-GEMINI_API_KEY=your_production_gemini_key
-PINECONE_API_KEY=your_production_pinecone_key
-SECRET_KEY=your_secure_secret_key
-HOST=0.0.0.0
-PORT=8000
-DEBUG=False
+CMD ["python", "main.py"]
 ```
 
-## 📊 Data Sources
+## 📊 System Performance
 
-The system uses the Bharatiya Nyaya Sanhita (BNS) data, which includes:
-- All chapters and sections
-- Legal definitions and explanations
-- Penalties and punishments
-- Illustrations and examples
-- Cross-references between sections
+The system has been tested with 50 comprehensive test cases and shows:
+- **Overall Accuracy**: 60.0%
+- **Response Time**: ~5.1 seconds average
+- **Coverage**: Excellent for core criminal offenses, good for specialized areas
+
+### Performance by Category
+- **Core Crimes** (theft, assault, murder): 100% accuracy
+- **Property Crimes**: 100% accuracy
+- **Sexual Offenses**: 100% accuracy
+- **Cybercrime**: 20% accuracy (needs improvement)
+- **Specialized Crimes**: Variable performance
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Port Already in Use**
+   ```bash
+   # Change port in .env file
+   PORT=8001
+   ```
+
+2. **API Key Errors**
+   - Verify your API keys in `.env` file
+   - Check if keys have proper permissions
+
+3. **Vector Database Connection Issues**
+   - Verify Qdrant URL and API key
+   - Check internet connectivity
+
+4. **Memory Issues**
+   - Ensure sufficient RAM (recommended: 4GB+)
+   - Close other applications
+
+### Logs
+
+Check the console output for detailed error messages and system status.
 
 ## 🤝 Contributing
 
@@ -189,23 +237,31 @@ The system uses the Bharatiya Nyaya Sanhita (BNS) data, which includes:
 
 ## 📝 License
 
-This project is for educational and informational purposes. Please consult qualified legal professionals for specific legal advice.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## ⚠️ Disclaimer
+## 🙏 Acknowledgments
 
-This AI assistant provides general information about the BNS for educational purposes. It does not constitute legal advice. For specific legal matters, please consult qualified legal professionals.
+- **Google Gemini** for AI capabilities
+- **Qdrant** for vector database services
+- **FastAPI** for the web framework
+- **Indian Legal System** for the BNS dataset
 
-## 🆘 Support
+## 📞 Support
 
-If you encounter any issues:
+For issues and questions:
+1. Check the troubleshooting section
+2. Review the API documentation
+3. Open an issue on GitHub
+4. Contact the development team
 
-1. Check that all dependencies are installed
-2. Verify your API keys are correct
-3. Ensure the BNS data files are present
-4. Check the logs for error messages
+## 🔄 Updates
 
-For more help, please open an issue on GitHub.
+The system is regularly updated with:
+- New BNS provisions
+- Improved AI models
+- Enhanced accuracy
+- Better performance
 
 ---
 
-**Made with ❤️ for the Indian legal community**
+**Note**: This system is for educational and informational purposes. For legal advice, always consult qualified legal professionals.

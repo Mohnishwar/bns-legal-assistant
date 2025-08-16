@@ -1,9 +1,10 @@
 import os
 import google.generativeai as genai
 from typing import List, Dict, Any, Optional
-from dotenv import load_dotenv
 
-load_dotenv()
+# Set environment variables directly to avoid .env file encoding issues
+if not os.getenv('GEMINI_API_KEY'):
+    os.environ['GEMINI_API_KEY'] = 'AIzaSyBVDhgO5TiW42IWooxsa43qhLvouCIn-vY'
 
 class GeminiLLM:
     def __init__(self):

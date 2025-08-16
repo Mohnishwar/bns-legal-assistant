@@ -10,10 +10,12 @@ from dotenv import load_dotenv
 
 # Import our custom modules
 from data_processor import BNSDataProcessor
-from vector_db_pinecone import PineconeVectorDB
+from vector_db_qdrant import QdrantVectorDB
 from llm_interface import GeminiLLM
 
-load_dotenv()
+# Set environment variables directly to avoid .env file encoding issues
+if not os.getenv('GEMINI_API_KEY'):
+    os.environ['GEMINI_API_KEY'] = 'AIzaSyBVDhgO5TiW42IWooxsa43qhLvouCIn-vY'
 
 from contextlib import asynccontextmanager
 
@@ -48,7 +50,7 @@ data_processor = None
 def get_vector_db():
     global vector_db
     if vector_db is None:
-        vector_db = PineconeVectorDB()
+        vector_db = QdrantVectorDB()
     return vector_db
 
 def get_llm():
@@ -116,6 +118,12 @@ app.add_middleware(
 
 # Mount static files
 app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
+
+@app.get("/chat")
+async def chat_interface():
+    """Serve the chat interface"""
+    from fastapi.responses import FileResponse
+    return FileResponse("frontend/index.html")
 
 # Security
 security = HTTPBearer()
