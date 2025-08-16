@@ -1,15 +1,14 @@
 # BNS Legal Assistant 🏛️
 
-A comprehensive AI-powered legal assistant for the Bharatiya Nyaya Sanhita (BNS) - India's new criminal code. This system provides accurate legal information, answers queries, and helps users understand criminal law provisions.
+A comprehensive AI-powered legal assistant for the Bharatiya Nyaya Sanhita (BNS) - India's new criminal code. This system provides legal information, answers queries, and helps users understand criminal law provisions.
 
 ## 🌟 Features
 
-- **AI-Powered Legal Queries**: Get accurate answers to legal questions using Gemini 1.5 Flash
+- **AI-Powered Legal Queries**: Get answers to legal questions using Gemini 1.5 Flash
 - **Comprehensive BNS Coverage**: Access to all sections of the Bharatiya Nyaya Sanhita
 - **Vector Database Search**: Fast and accurate retrieval of relevant legal information
 - **RESTful API**: Easy integration with web applications and mobile apps
 - **Web Interface**: User-friendly frontend for legal queries
-- **Multi-language Support**: Currently supports English (expandable)
 
 ## 🚀 Quick Start
 
@@ -227,41 +226,5 @@ The system has been tested with 50 comprehensive test cases and shows:
 
 Check the console output for detailed error messages and system status.
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgments
-
-- **Google Gemini** for AI capabilities
-- **Qdrant** for vector database services
-- **FastAPI** for the web framework
-- **Indian Legal System** for the BNS dataset
-
-## 📞 Support
-
-For issues and questions:
-1. Check the troubleshooting section
-2. Review the API documentation
-3. Open an issue on GitHub
-4. Contact the development team
-
-## 🔄 Updates
-
-The system is regularly updated with:
-- New BNS provisions
-- Improved AI models
-- Enhanced accuracy
-- Better performance
-
----
 
 **Note**: This system is for educational and informational purposes. For legal advice, always consult qualified legal professionals.
