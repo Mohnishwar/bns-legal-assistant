@@ -208,14 +208,14 @@ class QdrantVectorDB:
 
             # Calculate cosine similarity
             similarities = []
-            query_embedding = np.array(query_embedding)
+            query_array = np.array(query_embedding)
 
             for doc in documents:
                 if 'embedding' not in doc:
                     continue
                 doc_embedding = np.array(doc['embedding'])
-                similarity = np.dot(query_embedding, doc_embedding) / (
-                    np.linalg.norm(query_embedding) * np.linalg.norm(doc_embedding)
+                similarity = np.dot(query_array, doc_embedding) / (
+                    np.linalg.norm(query_array) * np.linalg.norm(doc_embedding)
                 )
                 similarities.append((similarity, doc))
 
