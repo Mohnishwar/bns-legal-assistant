@@ -14,6 +14,7 @@ from vector_db_qdrant import QdrantVectorDB
 from llm_interface import GeminiLLM
 
 # Load environment variables from .env file
+load_dotenv()
 # API key should be set in .env file, not hardcoded here
 
 from contextlib import asynccontextmanager

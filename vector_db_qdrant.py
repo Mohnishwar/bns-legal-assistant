@@ -3,6 +3,10 @@ import json
 from typing import List, Dict, Any, Optional
 import requests
 import numpy as np
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Set environment variables directly to avoid .env file encoding issues
 if not os.getenv('QDRANT_URL'):
